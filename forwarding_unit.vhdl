@@ -1,3 +1,6 @@
+--stall on cycle 3 until beg of 6, on 7 until beg of 10, on 10 until beg of 13, on 15 until beg of 18, on 18...
+--bne handled in comparator not forwarding
+--ex_mem /= if_id_reg2
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -7,18 +10,21 @@ entity forwarding_unit is
         ex_mem_reg_write : in STD_LOGIC;
         mem_wb_mem_read  : in STD_LOGIC;
         mem_wb_load_addr : in STD_LOGIC;
+        mem_wb_reg_write : in STD_LOGIC;
         ex_mem_rd        : in STD_LOGIC_VECTOR(4 downto 0);
         mem_wb_rd        : in STD_LOGIC_VECTOR(4 downto 0);
         id_ex_rs1        : in STD_LOGIC_VECTOR(4 downto 0);
         -- need any other input or output registers?
-        mux_select_A     : out STD_LOGIC_VECTOR(1 downto 0)
+        mux_select_A     : out STD_LOGIC_VECTOR(1 downto 0);
+        id_ex_opcode     : in STD_LOGIC_VECTOR(6 downto 0);
+        ex_mem_opcode    : in STD_LOGIC_VECTOR(6 downto 0)
     );
 end forwarding_unit;
 
 architecture Behavioral of forwarding_unit is
 
 begin
-    process(ex_mem_reg_write, mem_wb_mem_read, mem_wb_load_addr, ex_mem_rd, mem_wb_rd, id_ex_rs1 -- any others?)
+    process(ex_mem_reg_write, mem_wb_mem_read, mem_wb_load_addr, ex_mem_rd, mem_wb_rd, id_ex_rs1, id_ex_opcode, ex_mem_opcode) -- any others?)
 begin
     -- mux to select alu input A (with forwarding)
     --    mux_select_A
@@ -31,11 +37,11 @@ begin
   mux_select_A <= "00";
 
   -- EX hazard
-  if <what control signals and opcodes?> then  -- alu to register case
+  if id_ex_rs1 = ex_mem_rd and ex_mem_reg_write = '1' and ex_mem_rd /= "00000" then  -- alu to register case -- read after write -- math after math
     mux_select_A <= "01";
-  elsif <what control signals and opcodes?> then  -- memory to register case
+  elsif id_ex_rs1 = ex_mem_rd and (mem_wb_mem_read = '1' or mem_wb_reg_write = '1') and mem_wb_rd /= "00000" then  -- memory to register case -- read after write -- math after load
     mux_select_A <= "10";
-  elsif <what control signals and opcodes?> then  -- load address to register case
+  elsif mem_wb_load_addr = '1' and id_ex_rs1 = ex_mem_rd and mem_wb_rd /= "00000"then  -- load address to register case
     mux_select_A <= "11";
   end if;
     end process;

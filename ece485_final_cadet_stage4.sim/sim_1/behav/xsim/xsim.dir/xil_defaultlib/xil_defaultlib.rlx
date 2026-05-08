@@ -1,0 +1,17 @@
+0.7
+2020.2
+Nov  8 2024
+22:36:57
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/alu.vhdl,1778125695,vhdl,,,,alu,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/alu_control.vhdl,1778125695,vhdl,,,,alu_control,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/control_unit.vhdl,1778125695,vhdl,,,,control_unit,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/data_mem.vhdl,1778125695,vhdl,,,,data_mem,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/ece485_final_cadet_stage4.srcs/sources_1/imports/ece485_final_cadet_stage2/instr_mem.vhdl,1778219603,vhdl,,,,instr_mem,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/forwarding_unit.vhdl,1778217623,vhdl,,,,forwarding_unit,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/hazard_detection_unit.vhdl,1778219259,vhdl,,,,hazard_detection_unit,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/immediate_generator.vhdl,1778125695,vhdl,,,,immediate_generator,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/pc.vhdl,1778125695,vhdl,,,,pc_live,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/pipeline_registers.vhdl,1778217815,vhdl,,,,pipeline_registers,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/reg_file.vhdl,1778125695,vhdl,,,,reg_file,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/riscv_pipeline.vhdl,1778219333,vhdl,,,,riscv_pipeline,,,,,,,,
+C:/Users/Noah.Chavez/ECE_485/ece485_final_cadet_stage4/tb_riscv_pipeline.vhdl,1778125695,vhdl,,,,tb_riscv_pipeline,,,,,,,,
