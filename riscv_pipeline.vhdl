@@ -269,7 +269,8 @@ architecture Behavioral of riscv_pipeline is
             start_stall    : out STD_LOGIC;
             double_stall   : out STD_LOGIC;
             if_id_opcode   : in STD_LOGIC_VECTOR(6 downto 0);
-            opcode   : in STD_LOGIC_VECTOR(6 downto 0)
+            opcode   : in STD_LOGIC_VECTOR(6 downto 0);
+            mux_select_A   : in STD_LOGIC_VECTOR(1 downto 0)
         );
     end component;
 
@@ -374,6 +375,7 @@ begin
             id_ex_alu_op => id_ex_alu_op,
             id_ex_rd => id_ex_rd,
             id_ex_opcode => id_ex_opcode,
+            id_ex_rs1 => id_ex_rs1,
         
             -- EX/MEM pipeline registers
             ex_mem_reg_write => ex_mem_reg_write,
@@ -467,7 +469,8 @@ begin
             start_stall    => start_stall,
             double_stall   => double_stall,
             if_id_opcode => if_id_opcode,
-            opcode => opcode
+            opcode => opcode,
+            mux_select_A => mux_select_A
         );
         
     -- Stall counter process
@@ -478,7 +481,7 @@ begin
                 stall_counter <= 0;
              elsif stall_counter > 0 then
                     stall_counter <= stall_counter - 1;
-             elsif start_stall = '1'then
+             elsif start_stall = '1'and double_stall = '1' then
                 --stall_counter <= 3;
                 stall_counter <= 2;  -- needed to support BNE [after previous stall]
                 --stall_counter <= 1;
@@ -507,7 +510,7 @@ begin
             ex_mem_opcode => ex_mem_opcode
         );
         
-        id_ex_rs1 <= id_ex_instr(19 downto 15);
+        --id_ex_rs1 <= id_ex_instr(19 downto 15);
 
 --------------------------------------------------------------------------------
     -- ID units
@@ -538,11 +541,10 @@ begin
     -- Comparator 
     not_equal_flag <= '1' when ex_mem_alu_result /= ex_mem_reg2_data else '0';
                                         
-     next_pc <= 
+     next_pc <= pc when (start_stall = '1' or stall_counter = 3 or stall_counter = 2 or double_stall = '1') else   -- stall case, single and double
                 std_logic_vector(signed(ex_mem_npc) + signed(ex_mem_imm)) when (ex_mem_jump = '1') else  -- jump case
                 std_logic_vector(signed(ex_mem_npc) + signed(ex_mem_imm)) when (ex_mem_branch = '1' and not_equal_flag = '1') else -- branch case, single stall
                 std_logic_vector(signed(ex_mem_npc) + signed(ex_mem_imm)) when (ex_mem_branch = '1' and not_equal_flag = '1') else -- branch case, double stall
-                pc when (start_stall = '1' or stall_counter = 3 or stall_counter = 2 or double_stall = '1') else   -- stall case, single and double
                 NPC;                            
                 
     -- ID/EX pipeline registers

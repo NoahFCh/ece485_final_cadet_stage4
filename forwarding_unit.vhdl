@@ -39,9 +39,9 @@ begin
   -- EX hazard
   if id_ex_rs1 = ex_mem_rd and ex_mem_reg_write = '1' and ex_mem_rd /= "00000" then  -- alu to register case -- read after write -- math after math
     mux_select_A <= "01";
-  elsif id_ex_rs1 = ex_mem_rd and (mem_wb_mem_read = '1' or mem_wb_reg_write = '1') and mem_wb_rd /= "00000" then  -- memory to register case -- read after write -- math after load
-    mux_select_A <= "10";
-  elsif mem_wb_load_addr = '1' and id_ex_rs1 = ex_mem_rd and mem_wb_rd /= "00000"then  -- load address to register case
+  elsif id_ex_rs1 = mem_wb_rd and (mem_wb_mem_read = '1' or mem_wb_reg_write = '1') and mem_wb_rd /= "00000" then  -- memory to register case -- read after write -- math after load
+    mux_select_A <= "10"; 
+  elsif mem_wb_load_addr = '1' and id_ex_rs1 = mem_wb_rd and mem_wb_rd /= "00000"then  -- load address to register case
     mux_select_A <= "11";
   end if;
     end process;

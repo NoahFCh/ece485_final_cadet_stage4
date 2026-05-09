@@ -17,7 +17,8 @@ entity hazard_detection_unit is
         start_stall    : out STD_LOGIC;
         double_stall   : out STD_LOGIC;
         if_id_opcode   : in STD_LOGIC_VECTOR(6 downto 0);
-        opcode   : in STD_LOGIC_VECTOR(6 downto 0)
+        opcode   : in STD_LOGIC_VECTOR(6 downto 0);
+        mux_select_A   : in STD_LOGIC_VECTOR(1 downto 0)
     );
 end hazard_detection_unit;
 
@@ -33,7 +34,7 @@ begin
             start_stall <= '0';
             double_stall <= '0';
         -- stall cases, dependency on a (1)load from memory, (2) load_addr
-        elsif (stall_counter = 0 and opcode = "0000011") 
+        elsif (stall_counter = 0 and opcode = "0000011" and mux_select_A /= "10") 
               and (rs1 = if_id_rd and if_id_rd /= "00000" ) then -- single stall data dependency case
                 start_stall <= '1';
         elsif (stall_counter = 0)
